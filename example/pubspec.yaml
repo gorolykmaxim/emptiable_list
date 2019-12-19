@@ -1,0 +1,19 @@
+name: emptiable_list_example
+description: Example of an emptiable list
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  animated_stream_list: ^1.1.0
+  emptiable_list:
+    path: ../../emptiable_list
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
