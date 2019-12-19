@@ -1,6 +1,6 @@
 name: emptiable_list
 description: Container for a list-displaying widget, that can display a placeholder-widget when the list is empty.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/gorolykmaxim/emptiable_list
 
 environment:
