@@ -3,6 +3,8 @@
 Container for a list-displaying widget, that can display a 
 placeholder-widget when the list is empty.
 
+![](example.gif)
+
 Can be handy if you are displaying stream of lists in a widget,
 that supports animations and must remain in widget hierarchy
 when empty in order to preserve animation states (for example 
