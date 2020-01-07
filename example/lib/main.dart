@@ -21,6 +21,11 @@ class _ExampleAppState extends State<ExampleApp> {
   final items = <String>[];
 
   @override
+  void initState() {
+    _initializeListAfterADelay();
+  }
+
+  @override
   void dispose() {
     controller.close();
   }
@@ -45,6 +50,7 @@ class _ExampleAppState extends State<ExampleApp> {
         ),
         body: EmptiableList(
             listStream: controller.stream,
+            initializingPlaceholder: Center(child: Text('Loading...')),
             placeholder: Center(child: Text('No items =(')),
             list: AnimatedStreamList(
                 streamList: controller.stream,
@@ -67,6 +73,11 @@ class _ExampleAppState extends State<ExampleApp> {
 
   void _remove() {
     items.removeLast();
+    controller.add(items);
+  }
+
+  void _initializeListAfterADelay() async {
+    await Future.delayed(Duration(seconds: 2));
     controller.add(items);
   }
 }

@@ -17,21 +17,28 @@ const DEFAULT_DURATION = const Duration(milliseconds: 500);
 class EmptiableList extends StatefulWidget {
   final Widget placeholder;
   final Widget list;
+  final Widget initializingPlaceholder;
   final Stream<List> listStream;
   final Duration transitionDuration;
 
   /// Create a widget, that will display [list] when [listStream] emits non-empty
   /// list and [placeholder] when [listStream] emits an empty list.
   ///
+  /// Before [listStream] emits the first version of a list, this widget will
+  /// display [initializingPlaceholder]. After receiving a first version
+  /// of a list, the widget will switch to either a [list] or a [placeholder].
+  ///
   /// Transition between [placeholder] and [list] is animated. Duration of this
   /// animation can be configured with [transitionDuration].
-  EmptiableList(
-      {@required this.listStream,
-      Widget placeholder,
-      @required this.list,
-      Duration transitionDuration})
-      : this.placeholder = placeholder ?? EMPTY_WIDGET,
-        this.transitionDuration = transitionDuration ?? DEFAULT_DURATION;
+  EmptiableList({
+    @required this.listStream,
+    Widget placeholder,
+    Widget initializingPlaceholder,
+    @required this.list,
+    Duration transitionDuration
+  }) : this.placeholder = placeholder ?? EMPTY_WIDGET,
+       this.initializingPlaceholder = initializingPlaceholder ?? EMPTY_WIDGET,
+       this.transitionDuration = transitionDuration ?? DEFAULT_DURATION;
 
   @override
   State<StatefulWidget> createState() {
@@ -62,15 +69,18 @@ class _EmptiableListState extends State<EmptiableList> {
 
   @override
   Widget build(BuildContext context) {
-    final listIsEmpty = currentList == null || currentList.isEmpty;
     return Stack(
       children: <Widget>[
         AnimatedOpacity(
-            opacity: listIsEmpty ? 1 : 0,
+            opacity: currentList == null ? 1 : 0,
+            duration: widget.transitionDuration,
+            child: widget.initializingPlaceholder),
+        AnimatedOpacity(
+            opacity: currentList != null && currentList.isEmpty ? 1 : 0,
             duration: widget.transitionDuration,
             child: widget.placeholder),
         AnimatedOpacity(
-            opacity: listIsEmpty ? 0 : 1,
+            opacity: currentList == null || currentList.isEmpty ? 0 : 1,
             duration: widget.transitionDuration,
             child: widget.list)
       ],
